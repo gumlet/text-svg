@@ -3,6 +3,8 @@ const {
   createCanvas
 } = require("canvas");
 
+const stream = require('stream');
+
 /**
  * Convert text to PNG image.
  * @param text
@@ -218,9 +220,14 @@ const text2png = (text, options = {}) => {
     case "buffer":
       return canvas.toBuffer();
     case "stream":
-      return canvas.createPNGStream();
+      const readable = new stream.Readable()
+      readable._read = () => {
+        readable.push(canvas.toBuffer());
+        readable.push(null);
+      }
+      return readable;
     case "dataURL":
-      return canvas.toDataURL("image/png");
+      return canvas.toDataURL("image/svg");
     case "canvas":
       return canvas;
     default:
