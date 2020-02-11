@@ -72,7 +72,7 @@ const text2png = (text, options = {}) => {
 
       const metrics = ctx.measureText(testLine);
 
-      if (metrics.width > options.maxWidth && n > 0 && options.wrap) {
+      if (options.wrap && metrics.width > options.maxWidth && n > 0) {
         const metrics = ctx.measureText(newLine);
         left = -1 * metrics.actualBoundingBoxLeft;
         right = metrics.actualBoundingBoxRight;
@@ -253,8 +253,8 @@ function parseOptions(options) {
     localFontName: options.localFontName || null,
     localFontPath: options.localFontPath || null,
 
-    wrap: options.wrap || true,
-    maxWidth: options.maxWidth || 50,
+    wrap: options.wrap || false,
+    maxWidth: options.maxWidth || undefined,
 
     output: options.output || "buffer"
   };
