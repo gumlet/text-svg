@@ -1,4 +1,7 @@
-const { registerFont, createCanvas } = require("canvas");
+const {
+  registerFont,
+  createCanvas
+} = require("canvas");
 
 /**
  * Convert text to PNG image.
@@ -24,8 +27,10 @@ const { registerFont, createCanvas } = require("canvas");
  * @param [options.borderColor="black"] border color
  * @param [options.localFontPath] path to local font (e.g. fonts/Lobster-Regular.ttf)
  * @param [options.localFontName] name of local font (e.g. Lobster)
+ * @param [options.maxWidth] maximum width of text
+ * @param [options.wrap] whether text should be wrapped when it exceeds max width
  * @param [options.output="buffer"] 'buffer', 'stream', 'dataURL', 'canvas's
- * @returns {string} png image buffer
+ * @returns {string} svg image buffer
  */
 const text2png = (text, options = {}) => {
   // Options
@@ -33,7 +38,9 @@ const text2png = (text, options = {}) => {
 
   // Register a custom font
   if (options.localFontPath && options.localFontName) {
-    registerFont(options.localFontPath, { family: options.localFontName });
+    registerFont(options.localFontPath, {
+      family: options.localFontName
+    });
   }
 
   const canvas = createCanvas(0, 0, 'svg');
@@ -47,14 +54,55 @@ const text2png = (text, options = {}) => {
   };
 
   let lastDescent;
-  const lineProps = text.split("\n").map(line => {
+  const lineProps = [];
+  text.split("\n").forEach(line => {
     ctx.font = options.font;
-    const metrics = ctx.measureText(line);
 
-    const left = -1 * metrics.actualBoundingBoxLeft;
-    const right = metrics.actualBoundingBoxRight;
-    const ascent = metrics.actualBoundingBoxAscent;
-    const descent = metrics.actualBoundingBoxDescent;
+    let words = line.split(' ');
+    let newLine = '';
+    let left, right, ascent, descent;
+
+    for (var n = 0; n < words.length; n++) {
+      let testLine;
+      if (n == 0) {
+        testLine = words[n];
+      } else {
+        testLine = newLine + " " + words[n];
+      }
+
+      const metrics = ctx.measureText(testLine);
+
+      if (metrics.width > options.maxWidth && n > 0 && options.wrap) {
+        const metrics = ctx.measureText(newLine);
+        left = -1 * metrics.actualBoundingBoxLeft;
+        right = metrics.actualBoundingBoxRight;
+        ascent = metrics.actualBoundingBoxAscent;
+        descent = metrics.actualBoundingBoxDescent;
+
+        max.left = Math.max(max.left, left);
+        max.right = Math.max(max.right, right);
+        max.ascent = Math.max(max.ascent, ascent);
+        max.descent = Math.max(max.descent, descent);
+        lastDescent = descent;
+        lineProps.push({
+          line: newLine,
+          left,
+          right,
+          ascent,
+          descent
+        });
+        newLine = words[n];
+      } else {
+        newLine = testLine;
+      }
+    }
+
+    const metrics = ctx.measureText(newLine);
+
+    left = -1 * metrics.actualBoundingBoxLeft;
+    right = metrics.actualBoundingBoxRight;
+    ascent = metrics.actualBoundingBoxAscent;
+    descent = metrics.actualBoundingBoxDescent;
 
     max.left = Math.max(max.left, left);
     max.right = Math.max(max.right, right);
@@ -62,7 +110,14 @@ const text2png = (text, options = {}) => {
     max.descent = Math.max(max.descent, descent);
     lastDescent = descent;
 
-    return { line, left, right, ascent, descent };
+    lineProps.push({
+      line: newLine,
+      left,
+      right,
+      ascent,
+      descent
+    });
+
   });
 
   const lineHeight = max.ascent + max.descent + options.lineSpacing;
@@ -152,7 +207,7 @@ const text2png = (text, options = {}) => {
 
     ctx.fillText(lineProp.line, x, y);
 
-    if ( options.strokeWidth > 0 ) {
+    if (options.strokeWidth > 0) {
       ctx.strokeText(lineProp.line, x, y);
     }
 
@@ -175,7 +230,7 @@ const text2png = (text, options = {}) => {
 
 function parseOptions(options) {
   return {
-    font: options.font ||  "30px sans-serif",
+    font: options.font || "30px sans-serif",
     textAlign: options.textAlign || "left",
     textColor: options.textColor || options.color || "black",
     backgroundColor: options.bgColor || options.backgroundColor || null,
@@ -197,6 +252,9 @@ function parseOptions(options) {
 
     localFontName: options.localFontName || null,
     localFontPath: options.localFontPath || null,
+
+    wrap: options.wrap || true,
+    maxWidth: options.maxWidth || 50,
 
     output: options.output || "buffer"
   };
