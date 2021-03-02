@@ -1,6 +1,6 @@
 {
   "name": "text-svg",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Convert text to SVG for node.js",
   "main": "index.js",
   "bin": {
@@ -33,12 +33,12 @@
     "LICENSE"
   ],
   "dependencies": {
-    "canvas": "^2.6.0",
-    "commander": "^3.0.1"
+    "canvas": "^2.7.0",
+    "commander": "^7.1.0"
   },
   "devDependencies": {
-    "eslint": "^6.3.0",
-    "eslint-config-prettier": "^6.3.0",
+    "eslint": "^7.21.0",
+    "eslint-config-prettier": "^8.1.0",
     "jasmine": "^3.4.0",
     "looks-same": "^7.2.1"
   }

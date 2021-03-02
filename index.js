@@ -219,13 +219,14 @@ const text2png = (text, options = {}) => {
   switch (options.output) {
     case "buffer":
       return canvas.toBuffer();
-    case "stream":
+    case "stream": {
       const readable = new stream.Readable()
       readable._read = () => {
         readable.push(canvas.toBuffer());
         readable.push(null);
       }
       return readable;
+    }
     case "dataURL":
       return canvas.toDataURL("image/svg");
     case "canvas":
