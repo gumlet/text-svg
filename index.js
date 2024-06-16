@@ -131,14 +131,14 @@ const text2png = (text, options = {}) => {
     (max.descent - lastDescent);
 
   canvas.width =
-    contentWidth +
+    Math.ceil(contentWidth) +
     options.borderLeftWidth +
     options.borderRightWidth +
     options.paddingLeft +
     options.paddingRight;
 
   canvas.height =
-    contentHeight +
+    Math.ceil(contentHeight) +
     options.borderTopWidth +
     options.borderBottomWidth +
     options.paddingTop +
