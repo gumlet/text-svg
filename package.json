@@ -40,6 +40,6 @@
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^8.1.0",
     "jasmine": "^3.4.0",
-    "looks-same": "^7.2.1"
+    "looks-same": "^9.0.1"
   }
 }
