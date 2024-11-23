@@ -34,7 +34,7 @@
   ],
   "dependencies": {
     "canvas": "^2.7.0",
-    "commander": "^7.1.0"
+    "commander": "^12.1.0"
   },
   "devDependencies": {
     "eslint": "^7.21.0",
