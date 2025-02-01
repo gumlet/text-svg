@@ -37,7 +37,7 @@
     "commander": "^7.1.0"
   },
   "devDependencies": {
-    "eslint": "^7.21.0",
+    "eslint": "^9.19.0",
     "eslint-config-prettier": "^8.1.0",
     "jasmine": "^3.4.0",
     "looks-same": "^7.2.1"
