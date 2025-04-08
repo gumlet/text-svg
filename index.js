@@ -32,6 +32,8 @@ const stream = require('stream');
  * @param [options.maxWidth] maximum width of text
  * @param [options.wrap] whether text should be wrapped when it exceeds max width
  * @param [options.output="buffer"] 'buffer', 'stream', 'dataURL', 'canvas's
+ * @param [options.width]
+ * @param [options.height]
  * @returns {string} svg image buffer
  */
 const text2png = (text, options = {}) => {
@@ -124,25 +126,33 @@ const text2png = (text, options = {}) => {
 
   const lineHeight = max.ascent + max.descent + options.lineSpacing;
 
-  const contentWidth = max.left + max.right;
+  const contentWidth = options.width ? options.width : max.left + max.right;
   const contentHeight =
     lineHeight * lineProps.length -
     options.lineSpacing -
     (max.descent - lastDescent);
 
-  canvas.width =
-    Math.ceil(contentWidth) +
-    options.borderLeftWidth +
-    options.borderRightWidth +
-    options.paddingLeft +
-    options.paddingRight;
+  if (options.width) {
+    canvas.width = options.width;
+  } else {
+    canvas.width =
+      Math.ceil(contentWidth) +
+      options.borderLeftWidth +
+      options.borderRightWidth +
+      options.paddingLeft +
+      options.paddingRight;
+  }
 
-  canvas.height =
-    Math.ceil(contentHeight) +
-    options.borderTopWidth +
-    options.borderBottomWidth +
-    options.paddingTop +
-    options.paddingBottom;
+  if (options.height) {
+    canvas.height = options.height;
+  }else{
+    canvas.height =
+      Math.ceil(contentHeight) +
+      options.borderTopWidth +
+      options.borderBottomWidth +
+      options.paddingTop +
+      options.paddingBottom;
+  }
 
   const hasBorder =
     false ||
@@ -264,7 +274,10 @@ function parseOptions(options) {
     wrap: options.wrap || false,
     maxWidth: options.maxWidth || undefined,
 
-    output: options.output || "buffer"
+    output: options.output || "buffer",
+
+    width: options.width || undefined,
+    height: options.height || undefined
   };
 }
 
