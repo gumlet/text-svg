@@ -47,6 +47,8 @@ fs.writeFileSync('out.svg', text2Svg('Hello!', {color: 'blue'}));
 |option.localFontPath||
 |option.localFontName||
 |option.output|'buffer'|
+|option.width||
+|option.height||
 
 ``option.color = '#000' | 'rgb(0, 0, 0)' | 'black' | ...``
 
