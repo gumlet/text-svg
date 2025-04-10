@@ -1,0 +1,37 @@
+name: Test and deploy on NPM
+on:
+  push:
+    tags:
+    - "*"
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 22
+
+    - name: Test
+      run: |    
+        npm ci
+        npm test
+
+  build_and_publish:
+    runs-on: ubuntu-24.04
+    needs: [test]
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 22
+        registry-url: https://registry.npmjs.org/
+    - name: Build
+      run: |
+        npm ci
+        npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,11 +1,9 @@
-[![NPM](https://nodei.co/npm/text2png.png)](https://nodei.co/npm/text2png/)
-[![npm version](https://badge.fury.io/js/text2png.svg)](https://badge.fury.io/js/text2png)
-[![Build Status](https://travis-ci.org/tkrkt/text2png.svg?branch=master)](https://travis-ci.org/tkrkt/text2png)
+[![NPM Version](https://img.shields.io/npm/v/text-svg)](https://www.npmjs.com/package/text-svg)
 
 # text-svg: Text to SVG generator for Node.js
 
 ```js
-textToSvg('Create png image\nfrom multi-line text!');
+textToSvg('Create svg image\nfrom multi-line text!');
 ```
 
 ![text2png](./img/text2png.png)
