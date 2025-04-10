@@ -1,51 +1,51 @@
 #!/usr/bin/env node
 
-const fs = require("fs");
-const path = require("path");
-const commander = require("commander");
-const version = require("../package.json").version;
-const text2png = require("../index.js");
+const fs = require('fs')
+const path = require('path')
+const commander = require('commander')
+const version = require('../package.json').version
+const text2png = require('../index.js')
 
 commander
   .version(version)
-  .description("Create png image from text.")
-  .option("-t, --text <message>", "text")
-  .option("-o, --output <path>", "output file path")
-  .option("-f, --font <string>", 'css font option (e.g. "30px Lobster")')
-  .option("-a, --textAlign <textAlign>", "text alignment")
-  .option("-c, --color <color>", "text color")
-  .option("-b, --backgroundColor <color>", "background color")
-  .option("-s, --lineSpacing <number>", "line spacing")
+  .description('Create png image from text.')
+  .option('-t, --text <message>', 'text')
+  .option('-o, --output <path>', 'output file path')
+  .option('-f, --font <string>', 'css font option (e.g. "30px Lobster")')
+  .option('-a, --textAlign <textAlign>', 'text alignment')
+  .option('-c, --color <color>', 'text color')
+  .option('-b, --backgroundColor <color>', 'background color')
+  .option('-s, --lineSpacing <number>', 'line spacing')
 
-  .option("--strokeWidth <number>", "stroke width")
-  .option("--strokeColor <number>", "stroke color")
-
-  .option(
-    "-p, --padding <number>",
-    "width of the padding area (left, top, right, bottom)"
-  )
-  .option("--paddingLeft <number>")
-  .option("--paddingTop <number>")
-  .option("--paddingRight <number>")
-  .option("--paddingBottom <number>")
+  .option('--strokeWidth <number>', 'stroke width')
+  .option('--strokeColor <number>', 'stroke color')
 
   .option(
-    "--borderWidth <number>",
-    "width of border (left, top, right, bottom)"
+    '-p, --padding <number>',
+    'width of the padding area (left, top, right, bottom)'
   )
-  .option("--borderLeftWidth <number>")
-  .option("--borderTopWidth <number>")
-  .option("--borderRightWidth <number>")
-  .option("--borderBottomWidth <number>")
-  .option("--borderColor <color>", "border color")
+  .option('--paddingLeft <number>')
+  .option('--paddingTop <number>')
+  .option('--paddingRight <number>')
+  .option('--paddingBottom <number>')
 
   .option(
-    "--localFontPath <path>",
-    "path to local font (e.g. fonts/Lobster-Regular.ttf)"
+    '--borderWidth <number>',
+    'width of border (left, top, right, bottom)'
   )
-  .option("--localFontName <name>", "name of local font (e.g. Lobster)")
+  .option('--borderLeftWidth <number>')
+  .option('--borderTopWidth <number>')
+  .option('--borderRightWidth <number>')
+  .option('--borderBottomWidth <number>')
+  .option('--borderColor <color>', 'border color')
 
-  .parse(process.argv);
+  .option(
+    '--localFontPath <path>',
+    'path to local font (e.g. fonts/Lobster-Regular.ttf)'
+  )
+  .option('--localFontName <name>', 'name of local font (e.g. Lobster)')
+
+  .parse(process.argv)
 
 const exec = text => {
   if ((commander.text || text) && commander.output) {
@@ -74,25 +74,25 @@ const exec = text => {
       localFontPath: commander.localFontPath,
       localFontName: commander.localFontName,
 
-      output: "stream"
-    });
-    const outputPath = path.resolve(process.cwd(), commander.output);
-    stream.pipe(fs.createWriteStream(outputPath));
+      output: 'stream'
+    })
+    const outputPath = path.resolve(process.cwd(), commander.output)
+    stream.pipe(fs.createWriteStream(outputPath))
   } else {
-    commander.outputHelp();
+    commander.outputHelp()
   }
-};
+}
 
 if (process.stdin.isTTY) {
-  exec();
+  exec()
 } else {
-  let input = "";
-  process.stdin.resume();
-  process.stdin.setEncoding("utf8");
-  process.stdin.on("data", function(chunk) {
-    input += chunk;
-  });
-  process.stdin.on("end", function() {
-    exec(input);
-  });
+  let input = ''
+  process.stdin.resume()
+  process.stdin.setEncoding('utf8')
+  process.stdin.on('data', function (chunk) {
+    input += chunk
+  })
+  process.stdin.on('end', function () {
+    exec(input)
+  })
 }

@@ -1,9 +1,9 @@
 const {
   registerFont,
   createCanvas
-} = require("canvas");
+} = require('canvas')
 
-const stream = require('stream');
+const stream = require('stream')
 
 /**
  * Convert text to PNG image.
@@ -38,81 +38,81 @@ const stream = require('stream');
  */
 const text2png = (text, options = {}) => {
   // Options
-  options = parseOptions(options);
+  options = parseOptions(options)
 
   // Register a custom font
   if (options.localFontPath && options.localFontName) {
     registerFont(options.localFontPath, {
       family: options.localFontName
-    });
+    })
   }
 
-  const canvas = createCanvas(0, 0, 'svg');
-  const ctx = canvas.getContext("2d");
+  const canvas = createCanvas(0, 0, 'svg')
+  const ctx = canvas.getContext('2d')
 
   const max = {
     left: 0,
     right: 0,
     ascent: 0,
     descent: 0
-  };
+  }
 
-  let lastDescent;
-  const lineProps = [];
-  text.split("\n").forEach(line => {
-    ctx.font = options.font;
+  let lastDescent
+  const lineProps = []
+  text.split('\n').forEach(line => {
+    ctx.font = options.font
 
-    let words = line.split(' ');
-    let newLine = '';
-    let left, right, ascent, descent;
+    const words = line.split(' ')
+    let newLine = ''
+    let left, right, ascent, descent
 
-    for (var n = 0; n < words.length; n++) {
-      let testLine;
-      if (n == 0) {
-        testLine = words[n];
+    for (let n = 0; n < words.length; n++) {
+      let testLine
+      if (n === 0) {
+        testLine = words[n]
       } else {
-        testLine = newLine + " " + words[n];
+        testLine = newLine + ' ' + words[n]
       }
 
-      const metrics = ctx.measureText(testLine);
+      const metrics = ctx.measureText(testLine)
 
       if (options.wrap && metrics.width > options.maxWidth && n > 0) {
-        const metrics = ctx.measureText(newLine);
-        left = -1 * metrics.actualBoundingBoxLeft;
-        right = metrics.actualBoundingBoxRight;
-        ascent = metrics.actualBoundingBoxAscent;
-        descent = metrics.actualBoundingBoxDescent;
+        const metrics = ctx.measureText(newLine)
+        left = -1 * metrics.actualBoundingBoxLeft
+        right = metrics.actualBoundingBoxRight
+        ascent = metrics.actualBoundingBoxAscent
+        descent = metrics.actualBoundingBoxDescent
 
-        max.left = Math.max(max.left, left);
-        max.right = Math.max(max.right, right);
-        max.ascent = Math.max(max.ascent, ascent);
-        max.descent = Math.max(max.descent, descent);
-        lastDescent = descent;
+        max.left = Math.max(max.left, left)
+        max.right = Math.max(max.right, right)
+        max.ascent = Math.max(max.ascent, ascent)
+        max.descent = Math.max(max.descent, descent)
+        lastDescent = descent
         lineProps.push({
           line: newLine,
           left,
           right,
           ascent,
           descent
-        });
-        newLine = words[n];
+        })
+        newLine = words[n]
       } else {
-        newLine = testLine;
+        newLine = testLine
       }
     }
 
-    const metrics = ctx.measureText(newLine);
+    const metrics = ctx.measureText(newLine)
 
-    left = -1 * metrics.actualBoundingBoxLeft;
-    right = metrics.actualBoundingBoxRight;
-    ascent = metrics.actualBoundingBoxAscent;
-    descent = metrics.actualBoundingBoxDescent;
+    left = -1 * metrics.actualBoundingBoxLeft
+    right = metrics.actualBoundingBoxRight
+    ascent = metrics.actualBoundingBoxAscent
+    descent = metrics.actualBoundingBoxDescent
 
-    max.left = Math.max(max.left, left);
-    max.right = Math.max(max.right, right);
-    max.ascent = Math.max(max.ascent, ascent);
-    max.descent = Math.max(max.descent, descent);
-    lastDescent = descent;
+    max.left = Math.max(max.left, left)
+    max.right = Math.max(max.right, right)
+    max.ascent = Math.max(max.ascent, ascent)
+    max.descent = Math.max(max.descent, descent)
+    lastDescent = descent
 
     lineProps.push({
       line: newLine,
@@ -120,38 +120,37 @@ const text2png = (text, options = {}) => {
       right,
       ascent,
       descent
-    });
+    })
+  })
 
-  });
+  const lineHeight = max.ascent + max.descent + options.lineSpacing
 
-  const lineHeight = max.ascent + max.descent + options.lineSpacing;
-
-  const contentWidth = options.width ? options.width : max.left + max.right;
+  const contentWidth = options.width ? options.width : max.left + max.right
   const contentHeight =
     lineHeight * lineProps.length -
     options.lineSpacing -
-    (max.descent - lastDescent);
+    (max.descent - lastDescent)
 
   if (options.width) {
-    canvas.width = options.width;
+    canvas.width = options.width
   } else {
     canvas.width =
       Math.ceil(contentWidth) +
       options.borderLeftWidth +
       options.borderRightWidth +
       options.paddingLeft +
-      options.paddingRight;
+      options.paddingRight
   }
 
   if (options.height) {
-    canvas.height = options.height;
-  }else{
+    canvas.height = options.height
+  } else {
     canvas.height =
       Math.ceil(contentHeight) +
       options.borderTopWidth +
       options.borderBottomWidth +
       options.paddingTop +
-      options.paddingBottom;
+      options.paddingBottom
   }
 
   const hasBorder =
@@ -159,103 +158,103 @@ const text2png = (text, options = {}) => {
     options.borderLeftWidth ||
     options.borderTopWidth ||
     options.borderRightWidth ||
-    options.borderBottomWidth;
+    options.borderBottomWidth
 
   if (hasBorder) {
-    ctx.fillStyle = options.borderColor;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = options.borderColor
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
   }
 
   if (options.backgroundColor) {
-    ctx.fillStyle = options.backgroundColor;
+    ctx.fillStyle = options.backgroundColor
     ctx.fillRect(
       options.borderLeftWidth,
       options.borderTopWidth,
       canvas.width - (options.borderLeftWidth + options.borderRightWidth),
       canvas.height - (options.borderTopWidth + options.borderBottomWidth)
-    );
+    )
   } else if (hasBorder) {
     ctx.clearRect(
       options.borderLeftWidth,
       options.borderTopWidth,
       canvas.width - (options.borderLeftWidth + options.borderRightWidth),
       canvas.height - (options.borderTopWidth + options.borderBottomWidth)
-    );
+    )
   }
 
-  ctx.font = options.font;
-  ctx.fillStyle = options.textColor;
-  ctx.antialias = "gray";
-  ctx.textAlign = options.textAlign;
-  ctx.lineWidth = options.strokeWidth;
-  ctx.strokeStyle = options.strokeColor;
+  ctx.font = options.font
+  ctx.fillStyle = options.textColor
+  ctx.antialias = 'gray'
+  ctx.textAlign = options.textAlign
+  ctx.lineWidth = options.strokeWidth
+  ctx.strokeStyle = options.strokeColor
 
-  let offsetY = options.borderTopWidth + options.paddingTop;
+  let offsetY = options.borderTopWidth + options.paddingTop
   lineProps.forEach(lineProp => {
     // Calculate Y
-    let x = 0;
-    let y = max.ascent + offsetY;
+    let x = 0
+    const y = max.ascent + offsetY
 
     // Calculate X
     switch (options.textAlign) {
-      case "start":
-      case "left":
-        x = lineProp.left + options.borderLeftWidth + options.paddingLeft;
-        break;
+      case 'start':
+      case 'left':
+        x = lineProp.left + options.borderLeftWidth + options.paddingLeft
+        break
 
-      case "end":
-      case "right":
+      case 'end':
+      case 'right':
         x =
           canvas.width -
           lineProp.left -
           options.borderRightWidth -
-          options.paddingRight;
-        break;
+          options.paddingRight
+        break
 
-      case "center":
-        x = contentWidth / 2 + options.borderLeftWidth + options.paddingLeft;
-        break;
+      case 'center':
+        x = contentWidth / 2 + options.borderLeftWidth + options.paddingLeft
+        break
     }
 
-    ctx.fillText(lineProp.line, x, y);
+    ctx.fillText(lineProp.line, x, y)
 
     if (options.strokeWidth > 0) {
-      ctx.strokeText(lineProp.line, x, y);
+      ctx.strokeText(lineProp.line, x, y)
     }
 
-    offsetY += lineHeight;
-  });
+    offsetY += lineHeight
+  })
 
   switch (options.output) {
-    case "buffer":
-      return canvas.toBuffer();
-    case "stream": {
+    case 'buffer':
+      return canvas.toBuffer()
+    case 'stream': {
       const readable = new stream.Readable()
       readable._read = () => {
-        readable.push(canvas.toBuffer());
-        readable.push(null);
+        readable.push(canvas.toBuffer())
+        readable.push(null)
       }
-      return readable;
+      return readable
     }
-    case "dataURL":
-      return canvas.toDataURL("image/svg");
-    case "canvas":
-      return canvas;
+    case 'dataURL':
+      return canvas.toDataURL('image/svg')
+    case 'canvas':
+      return canvas
     default:
-      throw new Error(`output type:${options.output} is not supported.`);
+      throw new Error(`output type:${options.output} is not supported.`)
   }
-};
+}
 
-function parseOptions(options) {
+function parseOptions (options) {
   return {
-    font: options.font || "30px sans-serif",
-    textAlign: options.textAlign || "left",
-    textColor: options.textColor || options.color || "black",
+    font: options.font || '30px sans-serif',
+    textAlign: options.textAlign || 'left',
+    textColor: options.textColor || options.color || 'black',
     backgroundColor: options.bgColor || options.backgroundColor || null,
     lineSpacing: options.lineSpacing || 0,
 
     strokeWidth: options.strokeWidth || 0,
-    strokeColor: options.strokeColor || "white",
+    strokeColor: options.strokeColor || 'white',
 
     paddingLeft: options.paddingLeft || options.padding || 0,
     paddingTop: options.paddingTop || options.padding || 0,
@@ -266,7 +265,7 @@ function parseOptions(options) {
     borderTopWidth: options.borderTopWidth || options.borderWidth || 0,
     borderBottomWidth: options.borderBottomWidth || options.borderWidth || 0,
     borderRightWidth: options.borderRightWidth || options.borderWidth || 0,
-    borderColor: options.borderColor || "black",
+    borderColor: options.borderColor || 'black',
 
     localFontName: options.localFontName || null,
     localFontPath: options.localFontPath || null,
@@ -274,11 +273,11 @@ function parseOptions(options) {
     wrap: options.wrap || false,
     maxWidth: options.maxWidth || undefined,
 
-    output: options.output || "buffer",
+    output: options.output || 'buffer',
 
     width: options.width || undefined,
     height: options.height || undefined
-  };
+  }
 }
 
-module.exports = text2png;
+module.exports = text2png

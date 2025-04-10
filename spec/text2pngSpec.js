@@ -1,44 +1,45 @@
 /* global expect */
 /* eslint no-console:0 */
+/* eslint-env jasmine */
 
-const fs = require("fs");
-const path = require("path");
-const glob = require("glob");
+const fs = require('fs')
+const path = require('path')
+const glob = require('glob')
 
-const text2png = require("../index.js");
-const looksSame = require("looks-same");
+const text2png = require('../index.js')
+const looksSame = require('looks-same')
 
 const platform = {
-  darwin: "osx",
-  linux: "linux",
+  darwin: 'osx',
+  linux: 'linux',
 
   // The following are not tested
-  win32: "windows",
-  aix: "linux",
-  freebsd: "linux",
-  openbsd: "linux",
-  sunos: "linux"
-}[process.platform];
+  win32: 'windows',
+  aix: 'linux',
+  freebsd: 'linux',
+  openbsd: 'linux',
+  sunos: 'linux'
+}[process.platform]
 
-describe("text2png", () => {
+describe('text2png', () => {
   glob
-    .sync(path.resolve(__dirname, "testcases", "*.json"))
+    .sync(path.resolve(__dirname, 'testcases', '*.json'))
     .forEach(filePath => {
-      const fileName = path.basename(filePath, ".json");
-      console.log(fileName);
+      const fileName = path.basename(filePath, '.json')
+      console.log(fileName)
 
-      it("matches " + fileName, () => {
-        const config = JSON.parse(fs.readFileSync(filePath));
-        const [, targetPlatform] = fileName.split("_");
+      it('matches ' + fileName, () => {
+        const config = JSON.parse(fs.readFileSync(filePath))
+        const [, targetPlatform] = fileName.split('_')
         if (targetPlatform && targetPlatform !== platform) {
-          return;
+          return
         }
 
         return new Promise((resolve, reject) => {
           looksSame(
             text2png.apply(text2png, config),
             fs.readFileSync(
-              path.join(__dirname, "expected", platform, fileName + ".png")
+              path.join(__dirname, 'expected', platform, fileName + '.png')
             ),
             {
               tolerance: 0.2,
@@ -46,12 +47,12 @@ describe("text2png", () => {
               antialiasingTolerance: 3
             },
             (error, match) => {
-              if (error) reject(error);
-              expect(match.equal).toBe(true, match);
-              resolve();
+              if (error) reject(error)
+              expect(match.equal).toBe(true, match)
+              resolve()
             }
-          );
-        });
-      });
-    });
-});
+          )
+        })
+      })
+    })
+})
