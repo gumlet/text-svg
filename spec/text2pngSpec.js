@@ -35,11 +35,6 @@ describe('text2svg', () => {
           return
         }
 
-        fs.writeFileSync(
-          path.join(__dirname, 'expected-svg', platform, fileName + '.svg'),
-          text2svg.apply(text2svg, config)
-        )
-
         const { equal } = await looksSame(text2svg.apply(text2svg, config),
           fs.readFileSync(
             path.join(__dirname, 'expected-svg', platform, fileName + '.svg')
