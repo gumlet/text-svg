@@ -6,7 +6,7 @@
 textToSvg('Create svg image\nfrom multi-line text!');
 ```
 
-![text2png](./img/text2png.png)
+![text2svg](./img/text2svg.svg)
 
 ## Quick start
 

@@ -8,7 +8,7 @@ const text2png = require('../index.js')
 
 commander
   .version(version)
-  .description('Create png image from text.')
+  .description('Create svg image from text.')
   .option('-t, --text <message>', 'text')
   .option('-o, --output <path>', 'output file path')
   .option('-f, --font <string>', 'css font option (e.g. "30px Lobster")')
