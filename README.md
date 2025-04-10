@@ -66,14 +66,6 @@ text2Svg('with custom fonts', {
 });
 ```
 
-## Command line interface
-
-```
-$ npm install -g text-svg
-$ text2Svg --help
-$ text2Svg -t "Hello!" -o "output.svg"
-```
-
 ## Example
 
 ```js
