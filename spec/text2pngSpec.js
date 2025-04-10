@@ -6,7 +6,7 @@ const fs = require('fs')
 const path = require('path')
 const glob = require('glob')
 
-const text2png = require('../index.js')
+const text2svg = require('../index.js')
 const looksSame = require('looks-same')
 
 const platform = {
@@ -21,38 +21,30 @@ const platform = {
   sunos: 'linux'
 }[process.platform]
 
-describe('text2png', () => {
+describe('text2svg', () => {
   glob
     .sync(path.resolve(__dirname, 'testcases', '*.json'))
     .forEach(filePath => {
       const fileName = path.basename(filePath, '.json')
       console.log(fileName)
 
-      it('matches ' + fileName, () => {
+      it('matches ' + fileName, async () => {
         const config = JSON.parse(fs.readFileSync(filePath))
         const [, targetPlatform] = fileName.split('_')
         if (targetPlatform && targetPlatform !== platform) {
           return
         }
 
-        return new Promise((resolve, reject) => {
-          looksSame(
-            text2png.apply(text2png, config),
-            fs.readFileSync(
-              path.join(__dirname, 'expected', platform, fileName + '.png')
-            ),
-            {
-              tolerance: 0.2,
-              ignoreAntialiasing: true,
-              antialiasingTolerance: 3
-            },
-            (error, match) => {
-              if (error) reject(error)
-              expect(match.equal).toBe(true, match)
-              resolve()
-            }
-          )
-        })
+        const { equal } = await looksSame(text2svg.apply(text2svg, config),
+          fs.readFileSync(
+            path.join(__dirname, 'expected-svg', platform, fileName + '.svg')
+          ),
+          {
+            tolerance: 0.2,
+            ignoreAntialiasing: true,
+            antialiasingTolerance: 3
+          })
+        expect(equal).toBe(true)
       })
     })
 })

@@ -36,7 +36,7 @@ const stream = require('stream')
  * @param [options.height]
  * @returns {string} svg image buffer
  */
-const text2png = (text, options = {}) => {
+const text2svg = (text, options = {}) => {
   // Options
   options = parseOptions(options)
 
@@ -280,4 +280,4 @@ function parseOptions (options) {
   }
 }
 
-module.exports = text2png
+module.exports = text2svg
