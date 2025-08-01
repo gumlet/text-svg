@@ -1,12 +1,9 @@
-const {
-  registerFont,
-  createCanvas
-} = require('canvas')
-
-const stream = require('stream')
+import { registerFont, createCanvas } from 'canvas'
+import { Readable } from 'stream'
+import type { TextSvgOptions, ParsedOptions, MaxMetrics, LineProperty } from './types/index'
 
 /**
- * Convert text to PNG image.
+ * Convert text to SVG image.
  * @param text
  * @param [options]
  * @param [options.font="30px sans-serif"] css style font
@@ -36,9 +33,9 @@ const stream = require('stream')
  * @param [options.height]
  * @returns {string} svg image buffer
  */
-const text2svg = (text, options = {}) => {
+const text2svg = (text: string, inputOptions: TextSvgOptions = {}): Buffer | Readable | string | any => {
   // Options
-  options = parseOptions(options)
+  const options: ParsedOptions = parseOptions(inputOptions)
 
   // Register a custom font
   if (options.localFontPath && options.localFontName) {
@@ -50,15 +47,15 @@ const text2svg = (text, options = {}) => {
   const canvas = createCanvas(0, 0, 'svg')
   const ctx = canvas.getContext('2d')
 
-  const max = {
+  const max: MaxMetrics = {
     left: 0,
     right: 0,
     ascent: 0,
     descent: 0
   }
 
-  let lastDescent
-  const lineProps = []
+  let lastDescent: number = 0
+  const lineProps: LineProperty[] = []
   text.split('\n').forEach(line => {
     ctx.font = options.font
 
@@ -76,7 +73,7 @@ const text2svg = (text, options = {}) => {
 
       const metrics = ctx.measureText(testLine)
 
-      if (options.wrap && metrics.width > options.maxWidth && n > 0) {
+      if (options.wrap && options.maxWidth && metrics.width > options.maxWidth && n > 0) {
         const metrics = ctx.measureText(newLine)
         left = -1 * metrics.actualBoundingBoxLeft
         right = metrics.actualBoundingBoxRight
@@ -229,7 +226,7 @@ const text2svg = (text, options = {}) => {
     case 'buffer':
       return canvas.toBuffer()
     case 'stream': {
-      const readable = new stream.Readable()
+      const readable = new Readable()
       readable._read = () => {
         readable.push(canvas.toBuffer())
         readable.push(null)
@@ -237,7 +234,7 @@ const text2svg = (text, options = {}) => {
       return readable
     }
     case 'dataURL':
-      return canvas.toDataURL('image/svg')
+      return canvas.toDataURL()
     case 'canvas':
       return canvas
     default:
@@ -245,7 +242,7 @@ const text2svg = (text, options = {}) => {
   }
 }
 
-function parseOptions (options) {
+function parseOptions (options: TextSvgOptions): ParsedOptions {
   return {
     font: options.font || '30px sans-serif',
     textAlign: options.textAlign || 'left',
@@ -280,4 +277,5 @@ function parseOptions (options) {
   }
 }
 
-module.exports = text2svg
+export default text2svg
+export { text2svg, TextSvgOptions, ParsedOptions }

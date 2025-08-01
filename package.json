@@ -1,15 +1,14 @@
 {
   "name": "text-svg",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "description": "Convert text to SVG for node.js",
-  "main": "index.js",
-  "bin": {
-    "text2svg": "bin/text2svg.js"
-  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "lint": "standard",
-    "fix": "standard --fix",
-    "test": "npm run lint && jasmine"
+    "build": "tsup ./index.ts --format esm --dts",
+    "dev": "tsup ./index.ts --format esm --dts --watch",
+    "prepublishOnly": "npm run build",
+    "test": "npm run build && jasmine"
   },
   "repository": {
     "type": "git",
@@ -17,8 +16,10 @@
   },
   "keywords": [
     "text",
-    "svg"
+    "svg",
+    "typescript"
   ],
+  "type": "module",
   "author": "Aditya Patadia",
   "license": "MIT",
   "bugs": {
@@ -26,9 +27,8 @@
   },
   "homepage": "https://github.com/gumlet/text-svg#readme",
   "files": [
-    "bin",
     "README.md",
-    "index.js",
+    "dist",
     "package.json",
     "LICENSE"
   ],
@@ -36,8 +36,11 @@
     "canvas": "^3.1.0"
   },
   "devDependencies": {
+    "@types/node": "^22.5.0",
+    "eslint": "^9.9.0",
     "jasmine": "^5.6.0",
     "looks-same": "^9.0.1",
-    "standard": "^17.1.2"
+    "tsup": "^8.5.0",
+    "typescript": "^5.5.4"
   }
 }

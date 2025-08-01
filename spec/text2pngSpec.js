@@ -2,12 +2,11 @@
 /* eslint no-console:0 */
 /* eslint-env jasmine */
 
-const fs = require('fs')
-const path = require('path')
-const glob = require('glob')
-
-const text2svg = require('../index.js')
-const looksSame = require('looks-same')
+import fs from 'node:fs'
+import path from 'node:path'
+import { glob } from 'glob'
+import looksSame from 'looks-same'
+import text2svg from '../dist/index.js'
 
 const platform = {
   darwin: 'osx',
@@ -23,7 +22,7 @@ const platform = {
 
 describe('text2svg', () => {
   glob
-    .sync(path.resolve(__dirname, 'testcases', '*.json'))
+    .sync(path.resolve(import.meta.dirname, 'testcases', '*.json'))
     .forEach(filePath => {
       const fileName = path.basename(filePath, '.json')
       console.log(fileName)
@@ -35,9 +34,9 @@ describe('text2svg', () => {
           return
         }
 
-        const { equal } = await looksSame(text2svg.apply(text2svg, config),
+        const { equal } = await looksSame(text2svg(config[0], config[1]),
           fs.readFileSync(
-            path.join(__dirname, 'expected-svg', platform, fileName + '.svg')
+            path.join(import.meta.dirname, 'expected-svg', platform, fileName + '.svg')
           ),
           {
             tolerance: 0.2,
