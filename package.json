@@ -1,6 +1,6 @@
 {
   "name": "text-svg",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Convert text to SVG for node.js",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,7 +8,8 @@
     "build": "tsup ./index.ts --format esm --dts",
     "dev": "tsup ./index.ts --format esm --dts --watch",
     "prepublishOnly": "npm run build",
-    "test": "npm run build && jasmine"
+    "test": "npm run build && jasmine",
+    "lint": "biome lint"
   },
   "repository": {
     "type": "git",
@@ -36,7 +37,8 @@
     "canvas": "^3.1.0"
   },
   "devDependencies": {
-    "@types/node": "^22.5.0",
+    "@biomejs/biome": "^2.3.0",
+    "@types/node": "^24.5.0",
     "eslint": "^9.9.0",
     "jasmine": "^5.6.0",
     "looks-same": "^9.0.1",

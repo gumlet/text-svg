@@ -1,5 +1,5 @@
 import { registerFont, createCanvas } from 'canvas'
-import { Readable } from 'stream'
+import { Readable } from 'node:stream'
 import type { TextSvgOptions, ParsedOptions, MaxMetrics, LineProperty } from './types/index'
 
 /**
@@ -61,14 +61,14 @@ const text2svg = (text: string, inputOptions: TextSvgOptions = {}): Buffer | Rea
 
     const words = line.split(' ')
     let newLine = ''
-    let left, right, ascent, descent
+    let left: number, right: number, ascent: number, descent: number
 
     for (let n = 0; n < words.length; n++) {
-      let testLine
+      let testLine: string
       if (n === 0) {
         testLine = words[n]
       } else {
-        testLine = newLine + ' ' + words[n]
+        testLine = `${newLine} ${words[n]}`
       }
 
       const metrics = ctx.measureText(testLine)
@@ -278,4 +278,4 @@ function parseOptions (options: TextSvgOptions): ParsedOptions {
 }
 
 export default text2svg
-export { text2svg, TextSvgOptions, ParsedOptions }
+export { text2svg, type TextSvgOptions, type ParsedOptions }

@@ -27,7 +27,7 @@ describe('text2svg', () => {
       const fileName = path.basename(filePath, '.json')
       console.log(fileName)
 
-      it('matches ' + fileName, async () => {
+      it(`matches ${fileName}`, async () => {
         const config = JSON.parse(fs.readFileSync(filePath))
         const [, targetPlatform] = fileName.split('_')
         if (targetPlatform && targetPlatform !== platform) {
@@ -36,7 +36,7 @@ describe('text2svg', () => {
 
         const { equal } = await looksSame(text2svg(config[0], config[1]),
           fs.readFileSync(
-            path.join(import.meta.dirname, 'expected-svg', platform, fileName + '.svg')
+            path.join(import.meta.dirname, 'expected-svg', platform, `${fileName}.svg`)
           ),
           {
             tolerance: 0.2,
