@@ -1,11 +1,8 @@
-/* global expect */
-/* eslint no-console:0 */
-/* eslint-env jasmine */
-
 import fs from 'node:fs'
 import path from 'node:path'
 import { glob } from 'glob'
 import looksSame from 'looks-same'
+import { describe, expect, it } from 'vitest'
 import text2svg from '../dist/index.mjs'
 
 const platform = {
@@ -25,7 +22,6 @@ describe('text2svg', () => {
     .sync(path.resolve(import.meta.dirname, 'testcases', '*.json'))
     .forEach(filePath => {
       const fileName = path.basename(filePath, '.json')
-      console.log(fileName)
 
       it(`matches ${fileName}`, async () => {
         const config = JSON.parse(fs.readFileSync(filePath))
