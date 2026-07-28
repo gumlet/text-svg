@@ -33,9 +33,8 @@ const text2svg = (
 
   let lastDescent: number = 0
   const lineProps: LineProperty[] = []
+  ctx.font = options.font
   text.split('\n').forEach((line) => {
-    ctx.font = options.font
-
     const words = line.split(' ')
     let newLine = ''
     let left: number, right: number, ascent: number, descent: number
@@ -133,11 +132,10 @@ const text2svg = (
   }
 
   const hasBorder =
-    false ||
-    options.borderLeftWidth ||
-    options.borderTopWidth ||
-    options.borderRightWidth ||
-    options.borderBottomWidth
+    options.borderLeftWidth > 0 ||
+    options.borderTopWidth > 0 ||
+    options.borderRightWidth > 0 ||
+    options.borderBottomWidth > 0
 
   if (hasBorder) {
     ctx.fillStyle = options.borderColor
@@ -208,12 +206,7 @@ const text2svg = (
     case 'buffer':
       return canvas.toBuffer()
     case 'stream': {
-      const readable = new Readable()
-      readable._read = () => {
-        readable.push(canvas.toBuffer())
-        readable.push(null)
-      }
-      return readable
+      return Readable.from(canvas.toBuffer())
     }
     case 'dataURL':
       return canvas.toDataURL()
@@ -235,16 +228,16 @@ function parseOptions(options: TextSvgOptions): ParsedOptions {
     strokeWidth: options.strokeWidth || 0,
     strokeColor: options.strokeColor || 'white',
 
-    paddingLeft: options.paddingLeft || options.padding || 0,
-    paddingTop: options.paddingTop || options.padding || 0,
-    paddingRight: options.paddingRight || options.padding || 0,
-    paddingBottom: options.paddingBottom || options.padding || 0,
+    paddingLeft: options.paddingLeft ?? options.padding ?? 0,
+    paddingTop: options.paddingTop ?? options.padding ?? 0,
+    paddingRight: options.paddingRight ?? options.padding ?? 0,
+    paddingBottom: options.paddingBottom ?? options.padding ?? 0,
 
-    borderLeftWidth: options.borderLeftWidth || options.borderWidth || 0,
-    borderTopWidth: options.borderTopWidth || options.borderWidth || 0,
-    borderBottomWidth: options.borderBottomWidth || options.borderWidth || 0,
-    borderRightWidth: options.borderRightWidth || options.borderWidth || 0,
-    borderColor: options.borderColor || 'black',
+    borderLeftWidth: options.borderLeftWidth ?? options.borderWidth ?? 0,
+    borderTopWidth: options.borderTopWidth ?? options.borderWidth ?? 0,
+    borderBottomWidth: options.borderBottomWidth ?? options.borderWidth ?? 0,
+    borderRightWidth: options.borderRightWidth ?? options.borderWidth ?? 0,
+    borderColor: options.borderColor ?? 'black',
 
     localFontName: options.localFontName || null,
     localFontPath: options.localFontPath || null,
