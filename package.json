@@ -1,6 +1,6 @@
 {
   "name": "text-svg",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Convert text to SVG for node.js",
   "main": "dist/index.mjs",
   "types": "dist/index.d.mts",
