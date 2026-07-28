@@ -5,11 +5,12 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsup ./index.ts --format esm --dts",
-    "dev": "tsup ./index.ts --format esm --dts --watch",
+    "build": "tsdown ./index.ts --format esm --dts",
+    "dev": "tsdown ./index.ts --format esm --watch",
     "prepublishOnly": "npm run build",
     "test": "npm run build && jasmine",
-    "lint": "biome lint"
+    "lint": "biome lint",
+    "typecheck": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -40,8 +41,8 @@
     "@biomejs/biome": "^2.3.0",
     "@types/node": "^24.5.0",
     "jasmine": "^5.6.0",
-    "looks-same": "^9.0.1",
-    "tsup": "^8.5.0",
-    "typescript": "^5.5.4"
+    "looks-same": "^10.0.0",
+    "tsdown": "^0.22.12",
+    "typescript": "^7.0.0"
   }
 }

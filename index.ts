@@ -1,39 +1,8 @@
-import { registerFont, createCanvas } from 'canvas'
+import { createCanvas, registerFont, type Canvas } from 'canvas'
 import { Readable } from 'node:stream'
-import type { TextSvgOptions, ParsedOptions, MaxMetrics, LineProperty } from './types/index'
+import type { LineProperty, MaxMetrics, ParsedOptions, TextSvgOptions } from './types/index.ts'
 
-/**
- * Convert text to SVG image.
- * @param text
- * @param [options]
- * @param [options.font="30px sans-serif"] css style font
- * @param [options.textAlign="left"] text alignment (left, center, right)
- * @param [options.color="black"] (or options.textColor) text color
- * @param [options.backgroundColor] (or options.bgColor) background color
- * @param [options.lineSpacing=0]
- * @param [options.strokeWidth=0]
- * @param [options.strokeColor='white']
- * @param [options.padding=0] width of the padding area (left, top, right, bottom)
- * @param [options.paddingLeft]
- * @param [options.paddingTop]
- * @param [options.paddingRight]
- * @param [options.paddingBottom]
- * @param [options.borderWidth=0] width of border (left, top, right, bottom)
- * @param [options.borderLeftWidth=0]
- * @param [options.borderTopWidth=0]
- * @param [options.borderRightWidth=0]
- * @param [options.borderBottomWidth=0]
- * @param [options.borderColor="black"] border color
- * @param [options.localFontPath] path to local font (e.g. fonts/Lobster-Regular.ttf)
- * @param [options.localFontName] name of local font (e.g. Lobster)
- * @param [options.maxWidth] maximum width of text
- * @param [options.wrap] whether text should be wrapped when it exceeds max width
- * @param [options.output="buffer"] 'buffer', 'stream', 'dataURL', 'canvas's
- * @param [options.width]
- * @param [options.height]
- * @returns {string} svg image buffer
- */
-const text2svg = (text: string, inputOptions: TextSvgOptions = {}): Buffer | Readable | string | any => {
+const text2svg = (text: string, inputOptions: TextSvgOptions = {}): Buffer | Readable | string | Canvas => {
   // Options
   const options: ParsedOptions = parseOptions(inputOptions)
 
@@ -278,4 +247,5 @@ function parseOptions (options: TextSvgOptions): ParsedOptions {
 }
 
 export default text2svg
-export { text2svg, type TextSvgOptions, type ParsedOptions }
+export { text2svg, type ParsedOptions, type TextSvgOptions }
+

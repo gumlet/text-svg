@@ -1,5 +1,4 @@
-
-interface TextSvgOptions {
+export interface TextSvgOptions {
   font?: string
   textAlign?: 'left' | 'center' | 'right' | 'start' | 'end'
   color?: string
@@ -29,7 +28,7 @@ interface TextSvgOptions {
   height?: number
 }
 
-interface ParsedOptions {
+export interface ParsedOptions {
   font: string
   textAlign: 'left' | 'center' | 'right' | 'start' | 'end'
   textColor: string
@@ -55,7 +54,7 @@ interface ParsedOptions {
   height: number | undefined
 }
 
-interface LineProperty {
+export interface LineProperty {
   line: string
   left: number
   right: number
@@ -63,11 +62,9 @@ interface LineProperty {
   descent: number
 }
 
-interface MaxMetrics {
+export interface MaxMetrics {
   left: number
   right: number
   ascent: number
   descent: number
 }
-
-export type { TextSvgOptions, ParsedOptions, LineProperty, MaxMetrics }

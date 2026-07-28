@@ -1,0 +1,27 @@
+{
+    "linter": {
+      "rules": {
+        "complexity": {
+          "noImportantStyles": "off"
+        },
+        "suspicious": {
+          "noThenProperty": "off",
+          "noDuplicateProperties": "off"
+        }
+      }
+    },
+    "formatter": {
+      "indentStyle": "space"
+    },
+    "javascript": {
+      "formatter": {
+        "quoteStyle": "single",
+        "semicolons": "asNeeded",
+        "trailingCommas": "none"
+      }
+    },
+    "files": {
+      "includes": ["index.ts"]
+    }
+  }
+  

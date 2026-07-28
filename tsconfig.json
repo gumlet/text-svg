@@ -11,12 +11,15 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": false,
-    "moduleResolution": "node",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "types": ["node"],
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true
   },
   "include": [
-    "index.ts"
+    "index.ts",
+    "types/**/*.ts"
   ],
   "exclude": [
     "node_modules",

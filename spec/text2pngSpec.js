@@ -6,7 +6,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { glob } from 'glob'
 import looksSame from 'looks-same'
-import text2svg from '../dist/index.js'
+import text2svg from '../dist/index.mjs'
 
 const platform = {
   darwin: 'osx',
