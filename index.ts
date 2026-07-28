@@ -132,7 +132,6 @@ const text2svg = (
   }
 
   const hasBorder =
-  false ||
     options.borderLeftWidth > 0 ||
     options.borderTopWidth > 0 ||
     options.borderRightWidth > 0 ||
