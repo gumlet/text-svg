@@ -228,15 +228,15 @@ function parseOptions(options: TextSvgOptions): ParsedOptions {
     strokeWidth: options.strokeWidth || 0,
     strokeColor: options.strokeColor || 'white',
 
-    paddingLeft: options.paddingLeft ?? options.padding ?? 0,
-    paddingTop: options.paddingTop ?? options.padding ?? 0,
-    paddingRight: options.paddingRight ?? options.padding ?? 0,
-    paddingBottom: options.paddingBottom ?? options.padding ?? 0,
+    paddingLeft: options.paddingLeft || options.padding || 0,
+    paddingTop: options.paddingTop || options.padding || 0,
+    paddingRight: options.paddingRight || options.padding || 0,
+    paddingBottom: options.paddingBottom || options.padding || 0,
 
-    borderLeftWidth: options.borderLeftWidth ?? options.borderWidth ?? 0,
-    borderTopWidth: options.borderTopWidth ?? options.borderWidth ?? 0,
-    borderBottomWidth: options.borderBottomWidth ?? options.borderWidth ?? 0,
-    borderRightWidth: options.borderRightWidth ?? options.borderWidth ?? 0,
+    borderLeftWidth: options.borderLeftWidth || options.borderWidth || 0,
+    borderTopWidth: options.borderTopWidth || options.borderWidth || 0,
+    borderBottomWidth: options.borderBottomWidth || options.borderWidth || 0,
+    borderRightWidth: options.borderRightWidth || options.borderWidth || 0,
     borderColor: options.borderColor ?? 'black',
 
     localFontName: options.localFontName || null,
