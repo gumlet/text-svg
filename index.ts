@@ -1,8 +1,16 @@
-import { createCanvas, registerFont, type Canvas } from 'canvas'
 import { Readable } from 'node:stream'
-import type { LineProperty, MaxMetrics, ParsedOptions, TextSvgOptions } from './types/index.ts'
+import { type Canvas, createCanvas, registerFont } from 'canvas'
+import type {
+  LineProperty,
+  MaxMetrics,
+  ParsedOptions,
+  TextSvgOptions
+} from './types/index.ts'
 
-const text2svg = (text: string, inputOptions: TextSvgOptions = {}): Buffer | Readable | string | Canvas => {
+const text2svg = (
+  text: string,
+  inputOptions: TextSvgOptions = {}
+): Buffer | Readable | string | Canvas => {
   // Options
   const options: ParsedOptions = parseOptions(inputOptions)
 
@@ -25,7 +33,7 @@ const text2svg = (text: string, inputOptions: TextSvgOptions = {}): Buffer | Rea
 
   let lastDescent: number = 0
   const lineProps: LineProperty[] = []
-  text.split('\n').forEach(line => {
+  text.split('\n').forEach((line) => {
     ctx.font = options.font
 
     const words = line.split(' ')
@@ -42,7 +50,12 @@ const text2svg = (text: string, inputOptions: TextSvgOptions = {}): Buffer | Rea
 
       const metrics = ctx.measureText(testLine)
 
-      if (options.wrap && options.maxWidth && metrics.width > options.maxWidth && n > 0) {
+      if (
+        options.wrap &&
+        options.maxWidth &&
+        metrics.width > options.maxWidth &&
+        n > 0
+      ) {
         const metrics = ctx.measureText(newLine)
         left = -1 * metrics.actualBoundingBoxLeft
         right = metrics.actualBoundingBoxRight
@@ -156,7 +169,7 @@ const text2svg = (text: string, inputOptions: TextSvgOptions = {}): Buffer | Rea
   ctx.strokeStyle = options.strokeColor
 
   let offsetY = options.borderTopWidth + options.paddingTop
-  lineProps.forEach(lineProp => {
+  lineProps.forEach((lineProp) => {
     // Calculate Y
     let x = 0
     const y = max.ascent + offsetY
@@ -211,7 +224,7 @@ const text2svg = (text: string, inputOptions: TextSvgOptions = {}): Buffer | Rea
   }
 }
 
-function parseOptions (options: TextSvgOptions): ParsedOptions {
+function parseOptions(options: TextSvgOptions): ParsedOptions {
   return {
     font: options.font || '30px sans-serif',
     textAlign: options.textAlign || 'left',
@@ -247,5 +260,4 @@ function parseOptions (options: TextSvgOptions): ParsedOptions {
 }
 
 export default text2svg
-export { text2svg, type ParsedOptions, type TextSvgOptions }
-
+export { type ParsedOptions, type TextSvgOptions, text2svg }
